@@ -50,5 +50,5 @@ test:
 production:
   <<: *default
   database: dataMatch_production
-  username: dataMatch
-  password: <%= ENV['DATAMATCH_DATABASE_PASSWORD'] %>
+  username: root
+  password: cucamonga1!
