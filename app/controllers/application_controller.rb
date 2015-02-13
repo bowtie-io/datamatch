@@ -22,7 +22,6 @@ class ApplicationController < ActionController::Base
 
   private
   def verify_bowtie_user
-    binding.pry
     if current_user_id.nil?
       respond_to do |format|
         format.json { render json: { status: :error, message: "Not Authorized" }, status: 403 }

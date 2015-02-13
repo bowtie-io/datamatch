@@ -35,6 +35,8 @@ gem 'pry'
 
 gem 'devise'
 gem 'activeadmin', github: 'activeadmin'
+gem 'unicorn'
+
 
 
 group :development, :test do
