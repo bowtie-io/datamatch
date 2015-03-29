@@ -1,7 +1,7 @@
 class ApplicationController < ActionController::Base
   skip_before_action :verify_authenticity_token
   before_action :verify_bowtie_user
-  # before_action :verify_project
+  before_action :verify_project
 
   def current_user_id
     request.headers['HTTP_X_BOWTIE_USER_ID']
@@ -12,7 +12,7 @@ class ApplicationController < ActionController::Base
   end
 
   def current_project_sid
-    request.headers['HTTP_X_DATAMATCH_PROJECT_SID']
+   params[:project_sid]
   end
 
   def current_project
