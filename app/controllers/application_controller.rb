@@ -2,6 +2,7 @@ class ApplicationController < ActionController::Base
   skip_before_action :verify_authenticity_token
   before_action :verify_bowtie_user
   before_action :verify_project
+  before_action :assign_user
 
   def current_user_id
     request.headers['HTTP_X_BOWTIE_USER_ID']
