@@ -11,14 +11,13 @@ class UsersController < ApplicationController
       match_objects << User.find(match.matched_id)
     end
 
-
     potentials = []
+
     all_users.each do |user|
-        unless match_objects.include? user
+        unless match_objects.include? user or user.id == current_user.id
         potentials << user
       end
     end
-
 
     render :json => {potential_matches: potentials.map(&:id)}
   end
@@ -26,8 +25,11 @@ class UsersController < ApplicationController
   # user details
   def show
     user = User.find(params[:id])
-    details = Detail.where(["project_sid = :u && user_sid = :t", { u: current_project.id, t: user.id }])
-    render :json => {user: user, details: details.first.user_details}
+    _detail = Detail.where(["project_sid = :u && user_sid = :t", { u: current_project.id, t: user.id }])
+    details = _detail.first.user_details rescue nil
+    tags = _detail.first.tags rescue nil
+
+    render :json => {user: user, details: details, tags: tags}
   end
 
 end

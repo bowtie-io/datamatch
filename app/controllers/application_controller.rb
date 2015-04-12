@@ -8,6 +8,10 @@ class ApplicationController < ActionController::Base
     request.headers['HTTP_X_BOWTIE_USER_ID']
   end
 
+  def current_user_plan
+    request.headers['HTTP_X_BOWTIE_USER_PLAN']
+  end
+
   def current_user
     User.find_by bowtie_id: current_user_id
   end
@@ -30,6 +34,7 @@ class ApplicationController < ActionController::Base
       return false
     end
     create_user
+    update_user_details
   end
 
   def verify_project
@@ -43,17 +48,34 @@ class ApplicationController < ActionController::Base
 
   def create_user
     unless User.exists?(:bowtie_id => current_user_id)
-      User.create(
+      u = User.create(
         :bowtie_id => current_user_id,
-        :name => request.headers['HTTP_X_BOWTIE_USER_NAME'],
-        :email => request.headers['HTTP_X_BOWTIE_USER_EMAIL'],
-        :active => true
+        :name      => request.headers['HTTP_X_BOWTIE_USER_NAME'],
+        :email     => request.headers['HTTP_X_BOWTIE_USER_EMAIL'],
+        :active    => true
         )
     end
   end
 
+  def update_user_details
+    unless Detail.exists?(:user_sid => current_user.id)
+      d = Detail.create(
+        :plan   => current_user_plan,
+        :active => true
+      )
+      d.project_sid = current_project.id
+      d.user_sid    = current_user.id
+      d.save!
+    end
+    check_user_data
+  end
+
   def assign_user
     current_project.users << current_user unless  current_project.users.exists?(current_user)
+  end
+
+  def check_user_data
+    return true
   end
 
 end

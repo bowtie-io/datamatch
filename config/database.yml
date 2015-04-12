@@ -16,7 +16,6 @@ default: &default
   username: root
   password:
   socket: /tmp/mysql.sock
-bindin
 development:
   <<: *default
   database: dataMatch_development

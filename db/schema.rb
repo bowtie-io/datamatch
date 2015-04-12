@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150212224117) do
+ActiveRecord::Schema.define(version: 20150412215638) do
 
   create_table "active_admin_comments", force: :cascade do |t|
     t.string   "namespace",     limit: 255
@@ -50,10 +50,12 @@ ActiveRecord::Schema.define(version: 20150212224117) do
     t.string   "sid",          limit: 255
     t.string   "project_sid",  limit: 255
     t.string   "user_sid",     limit: 255
-    t.string   "user_details", limit: 255
+    t.string   "plan",         limit: 255
+    t.text     "user_details", limit: 65535
+    t.text     "tags",         limit: 65535
     t.boolean  "active",       limit: 1
-    t.datetime "created_at",               null: false
-    t.datetime "updated_at",               null: false
+    t.datetime "created_at",                 null: false
+    t.datetime "updated_at",                 null: false
   end
 
   add_index "details", ["sid"], name: "index_details_on_sid", unique: true, using: :btree
