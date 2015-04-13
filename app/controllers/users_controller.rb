@@ -46,6 +46,10 @@ class UsersController < ApplicationController
     details = _detail.first.user_details rescue nil
     tags = _detail.first.tags rescue nil
 
+    if current_user_plan == "Startup"
+      user.email = user.email.gsub(/.{0,4}@/, '****@')
+    end
+
     render :json => {user: user, details: details, tags: tags}
   end
 
