@@ -22,9 +22,26 @@ class UsersController < ApplicationController
     render :json => {potential_matches: potentials.map(&:id)}
   end
 
+
+  def update
+    detail = Detail.where(["project_sid = :u && user_sid = :t", { u: current_project.id, t: current_user.id }]).first
+    detail.tags = params[:tags]
+    detail.user_details = params[:details]
+    detail.save!
+
+    render :json => {status: "user updated"}
+  end
+
+
+
   # user details
   def show
-    user = User.find(params[:id])
+    if params[:id] == "self"
+      user = current_user
+    else
+      user = User.find(params[:id])
+    end
+
     _detail = Detail.where(["project_sid = :u && user_sid = :t", { u: current_project.id, t: user.id }])
     details = _detail.first.user_details rescue nil
     tags = _detail.first.tags rescue nil
