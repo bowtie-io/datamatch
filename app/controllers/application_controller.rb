@@ -48,7 +48,7 @@ class ApplicationController < ActionController::Base
 
   def create_user
     unless User.exists?(:bowtie_user_id => current_bowtie_user_id)
-      u = User.create(
+      _u = User.create(
         :bowtie_user_id => current_bowtie_user_id,
         :name      => request.headers['HTTP_X_BOWTIE_USER_NAME'],
         :email     => request.headers['HTTP_X_BOWTIE_USER_EMAIL'],

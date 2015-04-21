@@ -50,7 +50,6 @@ class UsersController < ApplicationController
       user.email = user.email.gsub(/.{0,4}@/, '****@')
     end
 
-    render :json => {user: user, details: details, tags: tags}
+    render :json => {user: user, details: details, tags: tags, plan: details.plan}
   end
-
 end
