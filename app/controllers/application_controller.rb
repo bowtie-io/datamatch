@@ -4,7 +4,7 @@ class ApplicationController < ActionController::Base
   before_action :verify_project
   before_action :assign_user
 
-  def current_user_id
+  def current_bowtie_user_id
     request.headers['HTTP_X_BOWTIE_USER_ID']
   end
 
@@ -13,7 +13,7 @@ class ApplicationController < ActionController::Base
   end
 
   def current_user
-    User.find_by bowtie_id: current_user_id
+    User.find_by bowtie_user_id: current_bowtie_user_id
   end
 
   def current_project_sid
@@ -47,9 +47,9 @@ class ApplicationController < ActionController::Base
   end
 
   def create_user
-    unless User.exists?(:bowtie_id => current_user_id)
+    unless User.exists?(:bowtie_user_id => current_bowtie_user_id)
       u = User.create(
-        :bowtie_id => current_user_id,
+        :bowtie_user_id => current_bowtie_user_id,
         :name      => request.headers['HTTP_X_BOWTIE_USER_NAME'],
         :email     => request.headers['HTTP_X_BOWTIE_USER_EMAIL'],
         :active    => true
