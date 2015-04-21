@@ -1,4 +1,4 @@
-class UserInterfaceController < ActionController::Base
+class UserInterfaceController < ApplicationController
   before_action :verify_bowtie_user
   before_action :verify_project
   before_action :assign_user
