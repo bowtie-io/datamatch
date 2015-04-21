@@ -1,6 +1,4 @@
-class UsersController < ApplicationController
-  skip_before_filter :verify_authenticity_token
-
+class UsersController < UserInterfaceController
   # potential matches
   def index
     all_users = current_project.users

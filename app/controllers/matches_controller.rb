@@ -1,6 +1,4 @@
-class MatchesController < ApplicationController
-  skip_before_filter :verify_authenticity_token
-
+class MatchesController < UserInterfaceController
   def index
     matches = current_user.matches.where(:decision => true)
 
