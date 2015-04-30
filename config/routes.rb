@@ -6,4 +6,6 @@ Rails.application.routes.draw do
   resources :projects
   resources :details
   resources :matches
+
+  post '/webhooks/bowtie' => 'bowtie_webhooks#create'
 end

@@ -14,7 +14,7 @@ class ApplicationController < ActionController::Base
   end
 
   def current_project_sid
-   params[:project_sid]
+    params[:project_sid]
   end
 
   def current_project

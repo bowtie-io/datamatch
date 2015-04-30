@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150412215638) do
+ActiveRecord::Schema.define(version: 20150430054100) do
 
   create_table "active_admin_comments", force: :cascade do |t|
     t.string   "namespace",     limit: 255
@@ -72,6 +72,14 @@ ActiveRecord::Schema.define(version: 20150412215638) do
 
   add_index "matches", ["sid"], name: "index_matches_on_sid", unique: true, using: :btree
 
+  create_table "profiles", force: :cascade do |t|
+    t.string   "bowtie_user_id",    limit: 255
+    t.string   "bowtie_project_id", limit: 255
+    t.text     "info",              limit: 65535
+    t.datetime "created_at",                      null: false
+    t.datetime "updated_at",                      null: false
+  end
+
   create_table "projects", id: false, force: :cascade do |t|
     t.string   "sid",          limit: 255
     t.string   "name",         limit: 255
@@ -91,14 +99,24 @@ ActiveRecord::Schema.define(version: 20150412215638) do
     t.string "user_id",    limit: 255
   end
 
-  create_table "users", id: false, force: :cascade do |t|
-    t.string   "sid",        limit: 255
-    t.string   "bowtie_id",  limit: 255
-    t.string   "email",      limit: 255
+  create_table "tags", force: :cascade do |t|
+    t.integer  "profile_id", limit: 4
     t.string   "name",       limit: 255
-    t.boolean  "active",     limit: 1
     t.datetime "created_at",             null: false
     t.datetime "updated_at",             null: false
+  end
+
+  add_index "tags", ["name"], name: "index_tags_on_name", using: :btree
+  add_index "tags", ["profile_id"], name: "index_tags_on_profile_id", using: :btree
+
+  create_table "users", id: false, force: :cascade do |t|
+    t.string   "sid",            limit: 255
+    t.string   "bowtie_user_id", limit: 255
+    t.string   "email",          limit: 255
+    t.string   "name",           limit: 255
+    t.boolean  "active",         limit: 1
+    t.datetime "created_at",                 null: false
+    t.datetime "updated_at",                 null: false
   end
 
   add_index "users", ["sid"], name: "index_users_on_sid", unique: true, using: :btree
