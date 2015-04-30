@@ -1,4 +1,21 @@
 class MatchesController < UserInterfaceController
+  responds_to :json
+
+  def index
+    @profiles = current_user_profile.matches.page(params[:page])
+    respond_with @profiles
+  end
+
+  def unnotified
+    @profiles = current_user_profile.unnotified_matches.page(params[:page])
+    respond_with @profiles
+  end
+
+  def potential_match_profiles
+    @profiles = current_user_profile.potential_matches_profiles.page(params[:page])
+    render json: @profiles
+  end
+
   def index
     matches = current_user.matches.where(:decision => true)
 

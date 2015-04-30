@@ -4,6 +4,62 @@ RSpec.describe Profile, type: :model do
   let(:profile){ Profile.create }
   let(:tag_names){ %w(frontend backend) }
 
+  # Returns match records for completed matches to this profile
+  describe '#matches' do
+    it 'includes matches when main profile is on the left' do
+      matched_profile = Profile.create
+      match           = Match.create(left_profile: profile, right_profile: matched_profile)
+      expect(profile.matches).to include(match)
+    end
+
+    it 'includes matches when main profile is on the right' do
+      matched_profile = Profile.create
+      match           = Match.create(left_profile: matched_profile, right_profile: profile)
+      expect(profile.matches).to include(match)
+    end
+
+    it 'does not include an incomplete match' do
+      match = Match.create(left_profile: profile, right_profile: nil)
+      expect(profile.matches).to_not include(match)
+    end
+  end
+
+  describe '#unnotified_matches' do
+    it 'includes matches when main profile is on the left and has not been notified' do
+      matched_profile = Profile.create
+      match = Match.create(left_profile: profile, right_profile: matched_profile, left_profile_notified_at: nil)
+      expect(profile.unnotified_matches).to include(match)
+    end
+
+    it 'includes matches when main profile is on the right and has not been notified' do
+      matched_profile = Profile.create
+      match = Match.create(left_profile: matched_profile, right_profile: profile, right_profile_notified_at: nil)
+      expect(profile.unnotified_matches).to include(match)
+    end
+
+    it 'does not include matches when main profile is on the left and has already been notified' do
+      matched_profile = Profile.create
+      match = Match.create(left_profile: profile, right_profile: matched_profile, left_profile_notified_at: Time.now)
+      expect(profile.unnotified_matches).to_not include(match)
+    end
+
+    it 'does not include matches when main profile is on the right and has already been notified' do
+      matched_profile = Profile.create
+      match = Match.create(left_profile: matched_profile, right_profile: profile, right_profile_notified_at: Time.now)
+      expect(profile.unnotified_matches).to_not include(match)
+    end
+
+    it 'does not contain incomplete matches' do
+      match = Match.create(left_profile: profile)
+      expect(profile.unnotified_matches).to_not include(match)
+    end
+  end
+
+  describe '#potential_match_profiles' do
+    it 'includes only profiles within the same project'
+    it 'includes only profiles more recent than the last match'
+    it 'includes profiles that are not in the same category'
+  end
 
   describe '#tag_name_array=' do
     it 'creates tag records for each tag name in an assigned array' do

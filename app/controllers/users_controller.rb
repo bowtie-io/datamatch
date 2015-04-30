@@ -1,23 +1,14 @@
 class UsersController < UserInterfaceController
   # potential matches
   def index
-    all_users = current_project.users
-    current_matches = current_user.matches
+    @potential_matches = Profile.
+      where(project_id: request.headers['X-Bowtie-Project']).                         # are part of the current project
+      where('created_at > ?', current_user_profile.last_potential_match_created_at).  # are more recent than the last profile that we matched (so we don't need to check who we've already matched with)
+      where('category != ?', current_user_profile.category).                          # are not the same category
+      order('created_at asc').                                                        # order so our immediate next match is next in order over the last one
+      page(params[:page])
 
-    match_objects = []
-    current_matches.each do |match|
-      match_objects << User.find(match.matched_id)
-    end
-
-    potentials = []
-
-    all_users.each do |user|
-        unless match_objects.include? user or user.id == current_user.id
-        potentials << user
-      end
-    end
-
-    render :json => {potential_matches: potentials.map(&:id)}
+    render json: @potential_matches
   end
 
 

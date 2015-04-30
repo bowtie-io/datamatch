@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150430054100) do
+ActiveRecord::Schema.define(version: 20150430171005) do
 
   create_table "active_admin_comments", force: :cascade do |t|
     t.string   "namespace",     limit: 255
@@ -60,24 +60,28 @@ ActiveRecord::Schema.define(version: 20150430054100) do
 
   add_index "details", ["sid"], name: "index_details_on_sid", unique: true, using: :btree
 
-  create_table "matches", id: false, force: :cascade do |t|
-    t.string   "sid",        limit: 255
-    t.string   "user_id",    limit: 255
-    t.string   "matched_id", limit: 255
-    t.string   "project_id", limit: 255
-    t.boolean  "decision",   limit: 1
-    t.datetime "created_at",             null: false
-    t.datetime "updated_at",             null: false
+  create_table "matches", force: :cascade do |t|
+    t.integer  "left_profile_id",           limit: 4
+    t.integer  "right_profile_id",          limit: 4
+    t.datetime "left_profile_matched_at"
+    t.datetime "right_profile_matched_at"
+    t.datetime "left_profile_notified_at"
+    t.datetime "right_profile_notified_at"
+    t.datetime "created_at",                          null: false
+    t.datetime "updated_at",                          null: false
   end
 
-  add_index "matches", ["sid"], name: "index_matches_on_sid", unique: true, using: :btree
+  add_index "matches", ["left_profile_id"], name: "index_matches_on_left_profile_id", using: :btree
+  add_index "matches", ["right_profile_id"], name: "index_matches_on_right_profile_id", using: :btree
 
   create_table "profiles", force: :cascade do |t|
-    t.string   "bowtie_user_id",    limit: 255
-    t.string   "bowtie_project_id", limit: 255
-    t.text     "info",              limit: 65535
-    t.datetime "created_at",                      null: false
-    t.datetime "updated_at",                      null: false
+    t.string   "bowtie_user_id",                  limit: 255
+    t.string   "bowtie_project_id",               limit: 255
+    t.text     "info",                            limit: 65535
+    t.datetime "created_at",                                    null: false
+    t.datetime "updated_at",                                    null: false
+    t.datetime "last_potential_match_created_at"
+    t.string   "category",                        limit: 255
   end
 
   create_table "projects", id: false, force: :cascade do |t|
