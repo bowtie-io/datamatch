@@ -23,7 +23,7 @@ class BowtieWebhooksController < ApplicationController
   private
   def user_plan_updated(hook)
     # Update an existing profile or create one
-    rofile_from_hook.update_attributes!({
+    profile.update_attributes!({
       plan: hook['data']['stripe_plan_id']
     })
   end
