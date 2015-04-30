@@ -1,4 +1,4 @@
-class MatchesController < UserInterfaceController
+class MatchesController < ApplicationController
   responds_to :json
 
   def index
@@ -22,7 +22,11 @@ class MatchesController < UserInterfaceController
     if current_user_profile.match(profile)
       render json: { status: 'ok' }
     else
-      render json: { status: 'error' }
+      render json: { status: 'error', message: 'Unable to create match' }
     end
+  end
+
+  def confirm_notification
+    render json: { status: 'error', message: 'TODO: Pending feature' }
   end
 end
