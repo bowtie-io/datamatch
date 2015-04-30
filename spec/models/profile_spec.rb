@@ -5,53 +5,53 @@ RSpec.describe Profile, type: :model do
   let(:tag_names){ %w(frontend backend) }
 
   # Returns match records for completed matches to this profile
-  describe '#matches' do
+  describe '#match_profiles' do
     it 'includes matches when main profile is on the left' do
       matched_profile = Profile.create
-      match           = Match.create(left_profile: profile, right_profile: matched_profile)
-      expect(profile.matches).to include(match)
+      Match.create(left_profile: profile, right_profile: matched_profile)
+      expect(profile.match_profiles).to include(matched_profile)
     end
 
     it 'includes matches when main profile is on the right' do
       matched_profile = Profile.create
-      match           = Match.create(left_profile: matched_profile, right_profile: profile)
-      expect(profile.matches).to include(match)
+      Match.create(left_profile: matched_profile, right_profile: profile)
+      expect(profile.match_profiles).to include(matched_profile)
     end
 
     it 'does not include an incomplete match' do
-      match = Match.create(left_profile: profile, right_profile: nil)
-      expect(profile.matches).to_not include(match)
+      Match.create(left_profile: profile, right_profile: nil)
+      expect(profile.match_profiles).to be_empty
     end
   end
 
-  describe '#unnotified_matches' do
+  describe '#unnotified_match_profiles' do
     it 'includes matches when main profile is on the left and has not been notified' do
       matched_profile = Profile.create
-      match = Match.create(left_profile: profile, right_profile: matched_profile, left_profile_notified_at: nil)
-      expect(profile.unnotified_matches).to include(match)
+      Match.create(left_profile: profile, right_profile: matched_profile, left_profile_notified_at: nil)
+      expect(profile.unnotified_match_profiles).to include(matched_profile)
     end
 
     it 'includes matches when main profile is on the right and has not been notified' do
       matched_profile = Profile.create
-      match = Match.create(left_profile: matched_profile, right_profile: profile, right_profile_notified_at: nil)
-      expect(profile.unnotified_matches).to include(match)
+      Match.create(left_profile: matched_profile, right_profile: profile, right_profile_notified_at: nil)
+      expect(profile.unnotified_match_profiles).to include(matched_profile)
     end
 
     it 'does not include matches when main profile is on the left and has already been notified' do
       matched_profile = Profile.create
-      match = Match.create(left_profile: profile, right_profile: matched_profile, left_profile_notified_at: Time.now)
-      expect(profile.unnotified_matches).to_not include(match)
+      Match.create(left_profile: profile, right_profile: matched_profile, left_profile_notified_at: Time.now)
+      expect(profile.unnotified_match_profiles).to_not include(matched_profile)
     end
 
     it 'does not include matches when main profile is on the right and has already been notified' do
       matched_profile = Profile.create
-      match = Match.create(left_profile: matched_profile, right_profile: profile, right_profile_notified_at: Time.now)
-      expect(profile.unnotified_matches).to_not include(match)
+      Match.create(left_profile: matched_profile, right_profile: profile, right_profile_notified_at: Time.now)
+      expect(profile.unnotified_match_profiles).to_not include(matched_profile)
     end
 
     it 'does not contain incomplete matches' do
-      match = Match.create(left_profile: profile)
-      expect(profile.unnotified_matches).to_not include(match)
+      Match.create(left_profile: profile)
+      expect(profile.unnotified_match_profiles).to be_empty
     end
   end
 

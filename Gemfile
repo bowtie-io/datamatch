@@ -23,8 +23,10 @@ gem 'jbuilder', '~> 2.0'
 # bundle exec rake doc:rails generates the API under doc/api.
 gem 'sdoc', '~> 0.4.0', group: :doc
 
-gem 'rspec', '~> 3.2.0'         # Because who doesn't like writing specs?
-gem 'rspec-rails', '~> 3.2.1'   # Because specs for Rails are a little more structured...
+gem 'rspec', '~> 3.2.0'                 # Because who doesn't like writing specs?
+gem 'rspec-rails', '~> 3.2.1'           # Because specs for Rails are a little more structured...
+gem 'spring-commands-rspec', '~> 1.0.4' # Nobody likes to wait when running specs
+
 gem 'jwt', '~> 1.4.1'           # To validate inbound bowtie webhooks
 
 # Use ActiveModel has_secure_password

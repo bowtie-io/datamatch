@@ -2,18 +2,26 @@ class Profile < ActiveRecord::Base
   has_many   :tags
   after_save :update_tags
 
-  def matches
-    Match.where('
-      (right_profile_id = :id and left_profile_id is not null) or
-      (left_profile_id = :id and right_profile_id is not null)
-    ', id: id)
+  def match_profiles
+    left_matches  = Match.select('left_profile_id as profile_id').
+      where('right_profile_id = ? and left_profile_id is not null', id)
+
+    right_matches = Match.select('right_profile_id as profile_id').
+      where('left_profile_id = ? and right_profile_id is not null', id)
+
+    Profile.where('id in (?) or id in (?)', left_matches, right_matches)
   end
 
-  def unnotified_matches
-    Match.where('
-      (right_profile_id = :id and left_profile_id is not null and right_profile_notified_at is null) or
-      (left_profile_id = :id and right_profile_id is not null and left_profile_notified_at is null)
-    ', id: id)
+  def unnotified_match_profiles
+    left_matches  = Match.select('left_profile_id as profile_id').
+      where('right_profile_id = ? and left_profile_id is not null', id).
+      where('right_profile_notified_at is null')
+
+    right_matches = Match.select('right_profile_id as profile_id').
+      where('left_profile_id = ? and right_profile_id is not null', id).
+      where('left_profile_notified_at is null')
+
+    Profile.where('id in (?) or id in (?)', left_matches, right_matches)
   end
 
   def potential_match_profiles
