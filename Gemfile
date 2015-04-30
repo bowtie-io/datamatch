@@ -23,30 +23,17 @@ gem 'jbuilder', '~> 2.0'
 # bundle exec rake doc:rails generates the API under doc/api.
 gem 'sdoc', '~> 0.4.0', group: :doc
 
-gem 'rspec', '~> 3.2.0'                 # Because who doesn't like writing specs?
-gem 'rspec-rails', '~> 3.2.1'           # Because specs for Rails are a little more structured...
-gem 'spring-commands-rspec', '~> 1.0.4' # Nobody likes to wait when running specs
-
 gem 'jwt', '~> 1.4.1'           # To validate inbound bowtie webhooks
 
-# Use ActiveModel has_secure_password
-# gem 'bcrypt', '~> 3.1.7'
-
-# Use Unicorn as the app server
-gem 'unicorn'
-
-
-# Use Capistrano for deployment
-# gem 'capistrano-rails', group: :development
-gem 'pry'
-
-gem 'devise'
-gem 'activeadmin', github: 'activeadmin'
-gem 'unicorn'
+gem 'unicorn', '~> 4.8.3'
 
 gem 'quiet_assets', group: :development
 
 group :development, :test do
+  gem 'rspec', '~> 3.2.0'                 # Because who doesn't like writing specs?
+  gem 'rspec-rails', '~> 3.2.1'           # Because specs for Rails are a little more structured...
+  gem 'spring-commands-rspec', '~> 1.0.4' # Nobody likes to wait when running specs
+
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug'
 

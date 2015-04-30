@@ -1,6 +1,20 @@
 class Profile < ActiveRecord::Base
   has_many   :tags
+
   after_save :update_tags
+
+  def match_with(profile)
+    # Check to see if the profile we're matching with already tried to match with us
+    match = Match.where('left_profile_id = ?', profile.id)
+
+    if match
+      match.update_attributes!(right_profile: self, right_profile_matched_at: Time.now)
+    else
+      match = Match.create(left_profile: self, left_profile_matched_at: Time.now)
+    end
+
+    match.valid?
+  end
 
   def match_profiles
     left_matches  = Match.select('left_profile_id as profile_id').

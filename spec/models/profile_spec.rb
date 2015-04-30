@@ -61,6 +61,11 @@ RSpec.describe Profile, type: :model do
     it 'includes profiles that are not in the same category'
   end
 
+  describe '#match' do
+    it 'creates a new match record when no match initiated by another profile'
+    it 'updates an existing match record when match already initiated by another profile'
+  end
+
   describe '#tag_name_array=' do
     it 'creates tag records for each tag name in an assigned array' do
       profile.tag_name_array = tag_names
