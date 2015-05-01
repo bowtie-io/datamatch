@@ -31,7 +31,17 @@ describe MatchesController do
     end
   end
 
-  describe '#create' do
+  describe '#pass' do
+    it 'updates last potential match index' do
+
+    end
+  end
+
+  describe '#accept' do
+    it 'updates last potential match index' do
+
+    end
+
     it 'creates a new match record' do
 
     end

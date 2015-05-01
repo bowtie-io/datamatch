@@ -62,6 +62,15 @@ class Profile < ActiveRecord::Base
     @tag_name_array || tags.collect(&:name)
   end
 
+  def as_json
+    {
+      id: id,
+      info: info,
+      tags: tag_name_array,
+      name: name
+    }
+  end
+
   private
   def update_tags
     self.tags = tag_name_array.collect { |tag_name| Tag.new(name: tag_name) }

@@ -48,6 +48,6 @@ test:
 #
 production:
   <<: *default
-  database: <%= ENV['DATABASE'] %>
-  username: <%= ENV['DATABASE_USER'] %>
-  password: <%= ENV['DATABASE_PASS'] %>
+  database: rails
+  username: rails
+  password: xGCLEDUj18

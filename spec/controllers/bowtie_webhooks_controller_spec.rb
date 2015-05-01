@@ -19,7 +19,7 @@ describe BowtieWebhooksController do
       expect(response.status).to be(200)
     end
 
-    it 'creates a user profile with `user.profile.tracked` webhook' do
+    it 'creates a user profile with `user.profile.updated` webhook' do
       hook_data[:event_type] = 'user.profile.tracked'
 
       jwt = JWT.encode(hook_data, secret_key)
@@ -35,15 +35,6 @@ describe BowtieWebhooksController do
 
       profile.reload
       expect(profile.tag_name_array).to eq(%w(ruby))
-    end
-
-    it 'removes a user profile with `user.profile.untracked` webhook' do
-      Profile.create!(bowtie_user_id: hook_data[:user_id], tag_name_array: %w(ruby))
-
-      hook_data[:event_type] = 'user.profile.untracked'
-
-      jwt = JWT.encode(hook_data, secret_key)
-      expect{ post :create, jwt: jwt }.to change{Profile.count}.by(-1)
     end
 
     it 'denies access when given an invalid jwt' do

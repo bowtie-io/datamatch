@@ -31,6 +31,8 @@ gem 'unicorn', '~> 4.8.3'
 
 gem 'quiet_assets', group: :development
 
+gem 'rails_12factor', group: :production
+
 group :development, :test do
   gem 'rspec', '~> 3.2.0'                 # Because who doesn't like writing specs?
   gem 'rspec-rails', '~> 3.2.1'           # Because specs for Rails are a little more structured...
@@ -45,3 +47,5 @@ group :development, :test do
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'spring'
 end
+
+ruby "2.2.0"

@@ -5,10 +5,8 @@ class BowtieWebhooksController < ActionController::Base
 
     # Find and delegate processing to the method responsible for this type of event
     event_processor = {
-      'user.plan.updated'      => :user_plan_updated,
-      'user.profile.tracked'   => :user_profile_tracked,
-      'user.profile.updated'   => :user_profile_tracked,
-      'user.profile.untracked' => :user_profile_untracked
+      'user.updated'           => :user_updated,
+      'user.profile.updated'   => :user_profile_updated
     }[hook['event_type']]
 
     send(event_processor, hook) if event_processor
@@ -21,10 +19,17 @@ class BowtieWebhooksController < ActionController::Base
   end
 
   private
-  def user_plan_updated(hook)
-    # Update an existing profile or create one
-    profile.update_attributes!({
-      plan: hook['data']['stripe_plan_id']
+  def user_updated(hook)
+    # Set the category for the user based on the plan identifier
+    category = {
+      'Tester'        => 'tester',
+      'Startup'       => 'startup',
+      'Startup - Pro' => 'startup'
+    }[hook['data']['stripe_plan_id']]
+
+    profile_from_hook(hook).update_attributes!({
+      category: category,
+      name:     hook['data']['name']
     })
   end
 
@@ -33,14 +38,6 @@ class BowtieWebhooksController < ActionController::Base
     profile_from_hook(hook).update_attributes!({
       tag_name_array: hook['data']['tags'],
       info:           hook['data']['info']
-    })
-  end
-
-  def user_profile_untracked(hook)
-    # Remove a profile that no longer exists
-    Profile.destroy_all({
-      bowtie_user_id: hook['user_id'],
-      bowtie_project_id: hook['project_id']
     })
   end
 

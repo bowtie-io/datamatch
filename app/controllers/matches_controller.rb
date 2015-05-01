@@ -1,13 +1,12 @@
 class MatchesController < ApplicationController
   def confirmed
-    @profiles = current_user_profile.match_profiles.page(params[:page])
+    @profiles = current_user_profile.match_profiles.page(1).limit(5)
     render json: { status: 'ok' }.merge(paginate_collection(@profiles))
   end
 
   def unnotified
     @profiles = current_user_profile.unnotified_match_profiles.page(params[:page])
     render json: { status: 'ok' }.merge(paginate_collection(@profiles))
-
   end
 
   def potential
@@ -15,8 +14,14 @@ class MatchesController < ApplicationController
     render json: { status: 'ok' }.merge(paginate_collection(@profiles))
   end
 
-  def create
-    profile = Profile.find(params[:id])
+  def pass
+    profile = Profile.find(params[:matched_profile_id])
+    current_user_profile.update_attributes!(last_potential_match_created_at: profile.created_at)
+    render json: { status: 'ok' }
+  end
+
+  def accept
+    profile = Profile.find(params[:matched_profile_id])
 
     if current_user_profile.match_with(profile)
       render json: { status: 'ok' }
