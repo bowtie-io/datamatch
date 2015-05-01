@@ -30,7 +30,7 @@ gem 'jwt', '~> 1.4.1'           # To validate inbound bowtie webhooks
 gem 'unicorn', '~> 4.8.3'
 
 gem 'quiet_assets', group: :development
-
+gem 'pg'
 gem 'rails_12factor', group: :production
 
 group :development, :test do
@@ -47,5 +47,3 @@ group :development, :test do
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'spring'
 end
-
-ruby "2.2.0"
