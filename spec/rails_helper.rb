@@ -48,3 +48,22 @@ RSpec.configure do |config|
   # https://relishapp.com/rspec/rspec-rails/docs
   config.infer_spec_type_from_file_location!
 end
+
+RSpec::Matchers.define :have_paginated_data_keys do
+  match do |response_body|
+    parsed_response = JSON.load(response_body)
+
+    expect(parsed_response['status']).to eq('ok')
+    expect(parsed_response).to include(*%w(data has_more page))
+  end
+end
+
+RSpec::Matchers.define :have_ok_status do
+  match do |response_body|
+    parsed_response = JSON.load(response_body)
+    expect(parsed_response['status']).to eq('ok')
+  end
+end
+
+
+

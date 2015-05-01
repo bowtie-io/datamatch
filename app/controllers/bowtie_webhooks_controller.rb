@@ -1,4 +1,4 @@
-class BowtieWebhooksController < ApplicationController
+class BowtieWebhooksController < ActionController::Base
   def create
     # Decode the data presented by the JWT
     hook, _attrs = JWT.decode(params[:jwt], Rails.configuration.bowtie_project_secret_key)
