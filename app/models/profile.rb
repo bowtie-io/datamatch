@@ -18,11 +18,6 @@ class Profile < ActiveRecord::Base
     match.valid?
   end
 
-  def unnotified_matches
-    Match.where('(right_profile_id = :id and left_profile_id is not null and right_profile_notified_at is null) or
-                 (left_profile_id = :id and right_profile_id is not null and left_profile_notified_at is null)', id: id)
-  end
-
   def match_profiles
     left_matches  = Match.select('left_profile_id as profile_id').
       where('right_profile_id = ? and left_profile_id is not null', id)
