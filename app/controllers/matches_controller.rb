@@ -1,7 +1,7 @@
 class MatchesController < ApplicationController
   def confirmed
-    @profiles = current_user_profile.match_profiles.page(1).limit(5)
     render json: { status: 'ok' }.merge(paginate_collection(@profiles))
+    @profiles = current_user_profile.match_profiles.page(params[:page])
   end
 
   def unnotified
@@ -10,8 +10,8 @@ class MatchesController < ApplicationController
   end
 
   def potential
-    @profiles = current_user_profile.potential_match_profiles.page(params[:page])
     render json: { status: 'ok' }.merge(paginate_collection(@profiles))
+    @profiles = current_user_profile.potential_match_profiles.page(1).per(5)
   end
 
   def pass
