@@ -1,17 +1,17 @@
 class MatchesController < ApplicationController
   def confirmed
-    render json: { status: 'ok' }.merge(paginate_collection(@profiles))
     @profiles = current_user_profile.match_profiles.page(params[:page])
+    render json: { status: 'ok' }.merge(paginate_collection(obfuscate(@profiles)))
   end
 
   def unnotified
     @profiles = current_user_profile.unnotified_match_profiles.page(params[:page])
-    render json: { status: 'ok' }.merge(paginate_collection(@profiles))
+    render json: { status: 'ok' }.merge(paginate_collection(obfuscate(@profiles)))
   end
 
   def potential
-    render json: { status: 'ok' }.merge(paginate_collection(@profiles))
     @profiles = current_user_profile.potential_match_profiles.page(1).per(5)
+    render json: { status: 'ok' }.merge(paginate_collection(obfuscate(@profiles)))
   end
 
   def pass
@@ -50,6 +50,11 @@ class MatchesController < ApplicationController
   end
 
   private
+  def obfuscate(profiles)
+    if current_bowtie_user_plan == 'Startup - Pro'
+      @profiles.map(&:obfuscate)
+    end
+  end
   def paginate_collection(collection)
     { data:     collection,
       has_more: !collection.last_page?,

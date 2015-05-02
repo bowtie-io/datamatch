@@ -66,6 +66,15 @@ RSpec.describe Profile, type: :model do
     it 'updates an existing match record when match already initiated by another profile'
   end
 
+  describe '#obfuscate' do
+    it 'obfuscates the username portion of the email address' do
+      profile.email = 'james@example.com'
+      profile.obfuscate
+
+      expect(profile.email).to eq('...@example.com')
+    end
+  end
+
   describe '#tag_name_array=' do
     it 'creates tag records for each tag name in an assigned array' do
       profile.tag_name_array = tag_names

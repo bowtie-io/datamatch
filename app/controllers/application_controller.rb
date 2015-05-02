@@ -9,6 +9,10 @@ class ApplicationController < ActionController::Base
     request.headers['HTTP_X_BOWTIE_USER_ID']
   end
 
+  def current_bowtie_user_plan
+    request.headers['HTTP_X_BOWTIE_USER_PLAN']
+  end
+
   def current_user_profile
     Profile.find_by bowtie_user_id: current_bowtie_user_id
   end

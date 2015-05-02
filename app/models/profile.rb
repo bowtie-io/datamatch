@@ -63,6 +63,13 @@ class Profile < ActiveRecord::Base
   end
 
   def as_json
+  def obfuscate
+    if email
+      @obfuscated ||= (self.email = '...@' + email.split('@').last)
+    else
+      "...@..."
+    end
+  end
     {
       id: id,
       info: info,
