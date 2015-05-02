@@ -5,7 +5,7 @@ class Profile < ActiveRecord::Base
 
   def match_with(profile)
     # Check to see if the profile we're matching with already tried to match with us
-    match = Match.where('left_profile_id = ?', profile.id)
+    match = Match.find_by(left_profile_id: profile.id)
 
     if match
       match.update_attributes!(right_profile: self, right_profile_matched_at: Time.now)
