@@ -29,6 +29,7 @@ class BowtieWebhooksController < ActionController::Base
 
     profile_from_hook(hook).update_attributes!({
       category: category,
+      email:    hook['data']['email'],
       name:     hook['data']['name']
     })
   end
