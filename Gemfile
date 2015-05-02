@@ -37,6 +37,7 @@ group :development, :test do
   gem 'rspec', '~> 3.2.0'                 # Because who doesn't like writing specs?
   gem 'rspec-rails', '~> 3.2.1'           # Because specs for Rails are a little more structured...
   gem 'spring-commands-rspec', '~> 1.0.4' # Nobody likes to wait when running specs
+  gem 'faker', '~> 1.4.3'                 # Lie well
 
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug'
