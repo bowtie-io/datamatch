@@ -32,6 +32,7 @@ gem 'unicorn', '~> 4.8.3'
 gem 'quiet_assets', group: :development
 gem 'pg'
 gem 'rails_12factor', group: :production
+gem 'rest-client', '~> 1.8.0'
 
 group :development, :test do
   gem 'rspec', '~> 3.2.0'                 # Because who doesn't like writing specs?

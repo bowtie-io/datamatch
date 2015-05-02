@@ -1,7 +1,8 @@
 class Profile < ActiveRecord::Base
-  has_many   :tags
+  has_many   :tags, dependent: :destroy
 
   after_save :update_tags
+  after_destroy :remove_matches
 
   def match_with(profile)
     # Check to see if the profile we're matching with already tried to match with us
@@ -62,7 +63,6 @@ class Profile < ActiveRecord::Base
     @tag_name_array || tags.collect(&:name)
   end
 
-  def as_json
   def obfuscate
     if email
       @obfuscated ||= (self.email = '...@' + email.split('@').last)
@@ -70,15 +70,22 @@ class Profile < ActiveRecord::Base
       "...@..."
     end
   end
+
+  def as_json(*args)
     {
       id: id,
       info: info,
       tags: tag_name_array,
-      name: name
+      name: name,
+      email: email
     }
   end
 
   private
+  def remove_matches
+    Match.where("left_profile_id = :id or right_profile_id = :id", id: id).destroy_all
+  end
+
   def update_tags
     self.tags = tag_name_array.collect { |tag_name| Tag.new(name: tag_name) }
   end

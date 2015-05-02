@@ -51,9 +51,11 @@ class MatchesController < ApplicationController
 
   private
   def obfuscate(profiles)
-    if current_bowtie_user_plan == 'Startup - Pro'
+    if current_bowtie_user_plan != 'Startup - Pro'
       @profiles.map(&:obfuscate)
     end
+
+    @profiles
   end
   def paginate_collection(collection)
     { data:     collection,
