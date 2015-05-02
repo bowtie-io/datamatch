@@ -13,7 +13,7 @@ class Profile < ActiveRecord::Base
       match = Match.create(left_profile: self, left_profile_matched_at: Time.now)
     end
 
-    update_attributes!(last_potential_match_created_at: Time.now)
+    update_attributes!(last_potential_match_created_at: profile.created_at)
 
     match.valid?
   end
