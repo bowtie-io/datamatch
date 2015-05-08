@@ -1,16 +1,16 @@
 class MatchesController < ApplicationController
   def confirmed
-    @profiles = current_user_profile.match_profiles.page(params[:page])
+    @profiles = current_user_profile.match_profiles.includes(:tags).page(params[:page])
     render json: { status: 'ok' }.merge(paginate_collection(obfuscate(@profiles)))
   end
 
   def unnotified
-    @profiles = current_user_profile.unnotified_match_profiles.page(params[:page])
+    @profiles = current_user_profile.unnotified_match_profiles.includes(:tags).page(params[:page])
     render json: { status: 'ok' }.merge(paginate_collection(obfuscate(@profiles)))
   end
 
   def potential
-    @profiles = current_user_profile.potential_match_profiles.page(1).per(5)
+    @profiles = current_user_profile.potential_match_profiles.includes(:tags).page(1).per(5)
     render json: { status: 'ok' }.merge(paginate_collection(obfuscate(@profiles)))
   end
 
