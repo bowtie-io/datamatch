@@ -76,6 +76,7 @@ class Profile < ActiveRecord::Base
       id: id,
       info: info,
       tags: tag_name_array,
+      avatar: avatar || (category == 'tester' ? '/img/avatar.gif' : '/img/avatar2.gif'),
       name: name,
       email: email
     }

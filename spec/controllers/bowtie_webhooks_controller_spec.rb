@@ -2,8 +2,8 @@ require 'rails_helper'
 
 describe BowtieWebhooksController do
   let(:secret_key)    { '_BOWTIE_PROJECT_SECRET_KEYXYZ' }
-  let(:profile_data)  { { tags: %w(frontend backend full-stack), info: 'Hello world' } }
-  let(:hook_data)     { { user_id: 123, data: profile_data}  }
+  let(:profile_data)  { { tags: %w(frontend backend full-stack), info: 'Hello world', avatar: { url: '/img/test.png' } } }
+  let(:hook_data)     { { user_id: 123, data: profile_data } }
 
   describe '#create' do
     before do
@@ -20,7 +20,7 @@ describe BowtieWebhooksController do
     end
 
     it 'creates a user profile with `user.profile.updated` webhook' do
-      hook_data[:event_type] = 'user.profile.tracked'
+      hook_data[:event_type] = 'user.profile.updated'
 
       jwt = JWT.encode(hook_data, secret_key)
       expect{ post :create, jwt: jwt }.to change{Profile.count}.by(1)

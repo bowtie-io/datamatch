@@ -36,9 +36,11 @@ class BowtieWebhooksController < ActionController::Base
 
   def user_profile_updated(hook)
     # Update an existing profile or create one
+
     profile_from_hook(hook).update_attributes!({
       tag_name_array: (hook['data']['tags'].split(',').map(&:strip) rescue []),
-      info:           hook['data']['info']
+      info:           hook['data']['info'],
+      avatar:         (hook['data']['avatar'] ? hook['data']['avatar']['url'] : nil)
     })
   end
 
