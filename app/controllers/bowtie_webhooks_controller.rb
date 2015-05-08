@@ -6,6 +6,7 @@ class BowtieWebhooksController < ActionController::Base
     # Find and delegate processing to the method responsible for this type of event
     event_processor = {
       'user.updated'           => :user_updated,
+      'user.removed'           => :user_removed,
       'user.profile.updated'   => :user_profile_updated
     }[hook['event_type']]
 
@@ -32,6 +33,10 @@ class BowtieWebhooksController < ActionController::Base
       email:    hook['data']['email'],
       name:     hook['data']['name']
     })
+  end
+
+  def user_removed(hook)
+    profile_from_hook(hook).destroy!
   end
 
   def user_profile_updated(hook)

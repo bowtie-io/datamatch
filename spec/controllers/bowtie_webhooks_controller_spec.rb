@@ -19,6 +19,14 @@ describe BowtieWebhooksController do
       expect(response.status).to be(200)
     end
 
+    it 'removes a user profile with `user.removed` webhook' do
+      hook_data[:event_type] = 'user.removed'
+      _profile = Profile.create(bowtie_user_id: 123)
+
+      jwt = JWT.encode(hook_data, secret_key)
+      expect{ post :create, jwt: jwt }.to change{Profile.count}.by(-1)
+    end
+
     it 'creates a user profile with `user.profile.updated` webhook' do
       hook_data[:event_type] = 'user.profile.updated'
 
